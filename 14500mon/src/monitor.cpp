@@ -207,7 +207,41 @@ void assemble(int address)
               token = strtok(NULL, " ");
               if (token != NULL)
               {
-                arg = strtoul(token, NULL, 16);
+                errno = 0;
+                if (strncmp("IN", token, 2) == 0)
+                {
+                  arg = 8 + strtoul(token + 2, NULL, 10);
+                }
+                else if (strncmp("OUT", token, 3) == 0)
+                {
+                  arg = 8 + strtoul(token + 3, NULL, 10);
+                }
+                else if (strncmp("SPR", token, 3) == 0)
+                {
+                  arg = strtoul(token + 3, NULL, 10);
+                }
+                else if (strncmp("RR", token, 2) == 0)
+                {
+                  arg = 7;
+                }
+                else if (strncmp("TMR0-TRIG", token, 9) == 0)
+                {
+                  arg = 15;
+                }
+                else if (strncmp("TMR0-OUT", token, 8) == 0)
+                {
+                  arg = 15;
+                }
+                else
+                {
+                  arg = strtoul(token, NULL, 16);
+                }
+              }
+
+              if (errno != 0)
+              {
+                Serial.println("\r\nERROR");
+                break;
               }
 
               writeProgramByte(address, opcode | (arg << 4));
