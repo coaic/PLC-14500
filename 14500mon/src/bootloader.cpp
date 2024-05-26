@@ -31,7 +31,7 @@ void loadBlockIntoProgramMemory(byte block)
   }
 
   releaseBus();
-
+  
   Serial.println(F(""));
 }
 
@@ -105,12 +105,9 @@ uint8_t enterBootloader()
         return BOOT_ENTER_MONITOR;
       }
 
-      Serial.print("TIMEOUT. RX BYYES: ");
+      Serial.print("BOOTLOADER TIMEOUT. RX BYYES: ");
       Serial.println(address);
-      for(uint16_t ix=0; ix<address;ix++) {
-        Serial.println(rxBuffer[ix], 16);
-      }
-
+      
       return BOOT_TIMEOUT;
     }
 
